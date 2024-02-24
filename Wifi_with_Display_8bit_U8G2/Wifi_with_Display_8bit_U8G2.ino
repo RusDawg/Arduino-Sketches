@@ -52,7 +52,7 @@ void loop() {
   sprintf(wifi_info, "%s\n", WiFi.localIP().toString().c_str());
   u8x8.drawString(1,3,wifi_info);
   u8x8.refreshDisplay();		// only required for SSD1606/7  
-  delay(2000);
+  delay(200);
   // put your main code here, to run repeatedly:
   WiFiClient client = server.available();   // listen for incoming clients
 
