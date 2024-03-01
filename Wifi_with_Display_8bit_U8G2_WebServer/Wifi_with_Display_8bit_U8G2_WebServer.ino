@@ -152,6 +152,7 @@ void handle_NotFound(){
   server.send(404, "text/plain", "Not found");
 }
 
+// define HTML string
 String SendHTML(uint8_t led1stat,uint8_t led2stat){
   String ptr = "<!DOCTYPE html> <html>\n";
   ptr +="<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\">\n";
