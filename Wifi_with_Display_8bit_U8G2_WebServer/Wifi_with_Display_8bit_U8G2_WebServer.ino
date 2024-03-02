@@ -26,16 +26,17 @@ IPAddress subnet(255, 255, 255, 0);
 // use WebServer  class to set up the server object
 WebServer server(80);  // be sure to start the server with "server.begin();" below after WiFi is connected
 //
+// set up LED pins
 uint8_t LED1pin = LED_BUILTIN;
 bool LED1status = LOW;
-
 uint8_t LED2pin = 5;
 bool LED2status = LOW;
+//
 // just some variables used for my counter that turns off the display
 int iloops = 0;  // flag for first time through the loop and counter
 // for a timer
 unsigned long dTime = 0;
-unsigned long TimeLeft = 20;  // time to leave OLED powered on with IP address displayed
+unsigned long TimeLeft = 30;  // time to leave OLED powered on with IP address displayed
 unsigned long lastTime = 0;
 unsigned long currentTime = 0;
 
@@ -76,19 +77,20 @@ void loop() {
   // putyour main code here, to run repeatedly:
   currentTime = millis();  // set current time to millis
   if (iloops == 0) {       // first time through write this to screen
-    // Serial.println("First time through loop.");
     u8x8.setFont(u8x8_font_chroma48medium8_r);
-    u8x8.drawString(1, 1, "WiFi Direct AP");
-    u8x8.drawString(1, 2, "IP address:    ");
-    u8x8.drawString(1, 3, "192.168.5.1    ");
-    u8x8.drawString(1, 6, "Screen auto-off");
+    u8x8.drawString(1, 1, "WiFi Direct AP  ");
+    u8x8.drawString(1, 2, "Connect via WiFi");
+    u8x8.drawString(1, 3, "Then browse to  ");
+    u8x8.drawString(1, 4, "IP address:     ");
+    u8x8.drawString(1, 5, "192.168.5.1     ");
+    u8x8.drawString(1, 6, "Screen auto-off ");
     char buffer[100];                                    // set up a buffer for display
     sprintf(buffer, "in %d seconds.   \n", TimeLeft);    // develop the string buffer
     u8x8.drawString(1, 7, buffer);                       // write to display
     u8x8.refreshDisplay();                               // only required for SSD1606/7
     lastTime = millis();                                 // set last time to millis the first time through
     delay(800);                                          // delay for first time through only
-  } else if (iloops > 0 && dTime > 1 && TimeLeft > 0) {  // go in here every second through the loop to increment the counter
+  } else if (iloops > 0 && dTime > 1 && TimeLeft > 0) {  // go in here ~ every second through the loop to increment the counter
     dTime = 0;                                           // reset dTime value
     lastTime = millis();                                 // reset the last time reference after each second
     char buffer[100];                                    // set up a buffer for display
