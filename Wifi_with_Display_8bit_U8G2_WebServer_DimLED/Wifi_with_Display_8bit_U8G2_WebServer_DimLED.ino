@@ -41,7 +41,7 @@ uint8_t led2Intensity = 125;
 int iloops = 0;  // flag for first time through the loop and counter
 // for a timer
 unsigned long dTime = 0;
-unsigned long TimeLeft = 30;  // time to leave OLED powered on with IP address displayed
+unsigned long TimeLeft = 60;  // time to leave OLED powered on with IP address displayed
 unsigned long lastTime = 0;
 unsigned long currentTime = 0;
 //
@@ -83,13 +83,13 @@ void loop() {
   currentTime = millis();  // set current time to millis
   if (iloops == 0) {       // first time through write this to screen
     u8x8.setFont(u8x8_font_chroma48medium8_r);
-    u8x8.drawString(1, 0, "               ");
-    u8x8.drawString(1, 1, "Connect to WiFi");
-    u8x8.drawString(1, 2, "AP:ArduinoESP32");
-    u8x8.drawString(1, 3, "Then browse to ");
-    u8x8.drawString(1, 4, "IP address:    ");
-    u8x8.drawString(1, 5, "192.168.5.1    ");
-    u8x8.drawString(1, 6, "Screen auto-off");
+    u8x8.drawString(1, 0, "                ");
+    u8x8.drawString(1, 1, "Connect to WiFi ");
+    u8x8.drawString(1, 2, "AP:ArduinoESP32 ");
+    u8x8.drawString(1, 3, "Then browse to  ");
+    u8x8.drawString(1, 4, "IP address:     ");
+    u8x8.drawString(1, 5, "192.168.5.1     ");
+    u8x8.drawString(1, 6, "Screen auto-off ");
     char buffer[100];                                  // set up a buffer for display
     sprintf(buffer, "in %d seconds.   \n", TimeLeft);  // develop the string buffer
     u8x8.drawString(1, 7, buffer);                     // write to display

@@ -22,7 +22,7 @@ unsigned long dTime = 0;
 unsigned long TimeLeft = 60;  // time to leave OLED powered on with IP address displayed
 unsigned long lastTime = 0;
 unsigned long currentTime = 0;
-int WiFiCon == 0; // is wifi connected?
+int WiFiCon = 0; // is wifi connected?
 //
 // select which pin will trigger the configuration WiFi portal when set to LOW
 #define TRIGGER_PIN 2
@@ -46,15 +46,17 @@ void loop() {
   if (digitalRead(TRIGGER_PIN) == LOW) {
     u8x8.begin();
     u8x8.setPowerSave(0);
-    u8x8.drawString(1, 1, "Scan for device");
-    u8x8.drawString(1, 2, "using WiFi to");
-    u8x8.drawString(1, 3, "connect direct");
-    u8x8.drawString(1, 4, "ID: OnDemandAP");
-    u8x8.drawString(1, 6, "Then browse to");
-    u8x8.drawString(1, 7, "IP: 192.168.4.1");
+    u8x8.drawString(1, 0, "                ");
+    u8x8.drawString(1, 1, "Scan for device ");
+    u8x8.drawString(1, 2, "using WiFi to   ");
+    u8x8.drawString(1, 3, "connect direct  ");
+    u8x8.drawString(1, 4, "ID: OnDemandAP  ");
+    u8x8.drawString(1, 5, "                ");
+    u8x8.drawString(1, 6, "Then browse to  ");
+    u8x8.drawString(1, 7, "IP: 192.168.4.1 ");
     u8x8.refreshDisplay();
     WiFiManager wm;
-    // reset settings - for testing
+    // reset settings - for testing - remove this for regular use
     wm.resetSettings();
     delay(20);
     // set configportal timeout
@@ -70,15 +72,19 @@ void loop() {
     Serial.println("New WiFi network connected!! :)");
     u8x8.setFont(u8x8_font_chroma48medium8_r);
     u8x8.begin();
-    u8x8.drawString(1, 1, "This device has");
-    u8x8.drawString(1, 2, "Successfully");
-    u8x8.drawString(1, 3, "connected to new");
-    u8x8.drawString(1, 4, "WiFi network!");
-    u8x8.refreshDisplay();
+    u8x8.drawString(1, 0, "                ");
+    u8x8.drawString(1, 1, "This device has ");
+    u8x8.drawString(1, 2, "Successfully    ");
+    u8x8.drawString(1, 3, "connected to    ");
+    u8x8.drawString(1, 4, "WiFi network!   ");
+    u8x8.drawString(1, 5, "                ");
+    u8x8.drawString(1, 6, "                ");
+    u8x8.drawString(1, 7, "                ");
+    // u8x8.refreshDisplay();
     server.begin();
-    WiFiCon == 1;
-    delay(3000);
-    iloops = 0;  // this reset will allow display of the IP address obtained by the WiFi router
+    WiFiCon = 1;
+    delay(5000);
+    // iloops = 0;  // this reset will allow display of the IP address obtained by the WiFi router
   }
   // putyour main code here, to run repeatedly:
   currentTime = millis();  // set current time to millis
@@ -86,24 +92,34 @@ void loop() {
     Serial.println("First time through loop.");
     u8x8.setFont(u8x8_font_chroma48medium8_r);
     u8x8.begin();
-    u8x8.drawString(1, 1, "Arduino is on.");
-    u8x8.drawString(1, 2, "Hit button to");
-    u8x8.drawString(1, 3, "connect.");
+    u8x8.drawString(1, 0, "                ");
+    u8x8.drawString(1, 1, "Arduino is on.  ");
+    u8x8.drawString(1, 2, "Hit button to   ");
+    u8x8.drawString(1, 3, "connect to Wifi ");
+    u8x8.drawString(1, 4, "                ");
+    u8x8.drawString(1, 5, "                ");
+    u8x8.drawString(1, 6, "                ");
+    u8x8.drawString(1, 7, "                ");
   }
-  else if (WiFiCon == 1)
+  else if (WiFiCon == 1) {
+    WiFiCon = 2;
     u8x8.begin();
-    u8x8.drawString(1, 1, "WiFi Connected");
+    u8x8.drawString(1, 0, "                ");
+    u8x8.drawString(1, 1, "WiFi Connected  ");
+    u8x8.drawString(1, 2, "                ");
     char wifi_info[100];
     sprintf(wifi_info, "%s\n", WiFi.localIP().toString().c_str());
     u8x8.drawString(1, 3, wifi_info);
-    u8x8.drawString(1, 6, "Screen auto-off");
+    u8x8.drawString(1, 4, "                ");
+    u8x8.drawString(1, 5, "                ");
+    u8x8.drawString(1, 6, "Screen auto-off ");
     char buffer[100];                                    // set up a buffer for display
     sprintf(buffer, "in %d seconds.   \n", TimeLeft);    // develop the string buffer
     u8x8.drawString(1, 7, buffer);                       // write to display
-    u8x8.refreshDisplay();                               // only required for SSD1606/7
+    // u8x8.refreshDisplay();                               // only required for SSD1606/7
     lastTime = millis();                                 // set last time to millis the first time through
     delay(800);                                          // delay for first time through only
-  } else if (WiFiCon == 1 && dTime > 1 && TimeLeft > 0) {  // go in here every second through the loop to increment the counter
+  } else if (WiFiCon == 2 && dTime > 1 && TimeLeft > 0) {  // go in here every second through the loop to increment the counter
     dTime = 0;                                           // reset dTime value
     lastTime = millis();                                 // reset the last time reference after each second
     char buffer[100];                                    // set up a buffer for display
@@ -112,7 +128,7 @@ void loop() {
     u8x8.drawString(1, 7, buffer);                       // write to display
     delay(20);
   } else if (iloops > 0 && dTime > 1 && TimeLeft == 0) {
-    WiFiCon = 2; // set to 2 after timer expires
+    WiFiCon = 3; // set to 2 after timer expires
     u8x8.setPowerSave(1);  // turn off dis play after initial timer expires
   }
 
